@@ -1,0 +1,17 @@
+.ipynb_checkpoints/
+100.dat
+1000.dat
+10000.dat
+100000.dat
+1000000.dat
+10000000.dat
+5000000.dat
+assignment1
+assignment1.3
+assignment1.3.c
+bin/
+include/
+lib/
+pip-selfcheck.json
+test
+test.c
