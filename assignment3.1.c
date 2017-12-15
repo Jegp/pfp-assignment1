@@ -1021,36 +1021,36 @@ static void futrts_cli_entry_main(struct futhark_context *ctx)
 {
     int64_t t_start, t_end;
     int time_runs;
-    struct futhark_f32_1d *read_value_2715;
-    int64_t read_shape_2716[1];
-    float *read_arr_2717 = NULL;
+    struct futhark_f32_1d *read_value_2857;
+    int64_t read_shape_2858[1];
+    float *read_arr_2859 = NULL;
     
     errno = 0;
-    if (read_array(&f32, (void **) &read_arr_2717, read_shape_2716, 1) != 0)
+    if (read_array(&f32, (void **) &read_arr_2859, read_shape_2858, 1) != 0)
         panic(1, "Failed reading input of type %s%s (errno: %s).\n", "[]",
               f32.type_name, strerror(errno));
     
-    struct futhark_f32_1d *read_value_2718;
-    int64_t read_shape_2719[1];
-    float *read_arr_2720 = NULL;
+    struct futhark_f32_1d *read_value_2860;
+    int64_t read_shape_2861[1];
+    float *read_arr_2862 = NULL;
     
     errno = 0;
-    if (read_array(&f32, (void **) &read_arr_2720, read_shape_2719, 1) != 0)
+    if (read_array(&f32, (void **) &read_arr_2862, read_shape_2861, 1) != 0)
         panic(1, "Failed reading input of type %s%s (errno: %s).\n", "[]",
               f32.type_name, strerror(errno));
     
-    double result_2721;
+    double result_2863;
     
     if (perform_warmup) {
         time_runs = 0;
-        assert((read_value_2715 = futhark_new_f32_1d(ctx, read_arr_2717,
-                                                     read_shape_2716[0])) != 0);
-        assert((read_value_2718 = futhark_new_f32_1d(ctx, read_arr_2720,
-                                                     read_shape_2719[0])) != 0);
+        assert((read_value_2857 = futhark_new_f32_1d(ctx, read_arr_2859,
+                                                     read_shape_2858[0])) != 0);
+        assert((read_value_2860 = futhark_new_f32_1d(ctx, read_arr_2862,
+                                                     read_shape_2861[0])) != 0);
         assert(futhark_context_sync(ctx) == 0);
         t_start = get_wall_time();
-        assert(futhark_main(ctx, &result_2721, read_value_2715,
-                            read_value_2718) == 0);
+        assert(futhark_main(ctx, &result_2863, read_value_2857,
+                            read_value_2860) == 0);
         assert(futhark_context_sync(ctx) == 0);
         t_end = get_wall_time();
         
@@ -1058,21 +1058,21 @@ static void futrts_cli_entry_main(struct futhark_context *ctx)
         
         if (time_runs && runtime_file != NULL)
             fprintf(runtime_file, "%ld\n", elapsed_usec);
-        assert(futhark_free_f32_1d(ctx, read_value_2715) == 0);
-        assert(futhark_free_f32_1d(ctx, read_value_2718) == 0);
+        assert(futhark_free_f32_1d(ctx, read_value_2857) == 0);
+        assert(futhark_free_f32_1d(ctx, read_value_2860) == 0);
         ;
     }
     time_runs = 1;
     /* Proper run. */
     for (int run = 0; run < num_runs; run++) {
-        assert((read_value_2715 = futhark_new_f32_1d(ctx, read_arr_2717,
-                                                     read_shape_2716[0])) != 0);
-        assert((read_value_2718 = futhark_new_f32_1d(ctx, read_arr_2720,
-                                                     read_shape_2719[0])) != 0);
+        assert((read_value_2857 = futhark_new_f32_1d(ctx, read_arr_2859,
+                                                     read_shape_2858[0])) != 0);
+        assert((read_value_2860 = futhark_new_f32_1d(ctx, read_arr_2862,
+                                                     read_shape_2861[0])) != 0);
         assert(futhark_context_sync(ctx) == 0);
         t_start = get_wall_time();
-        assert(futhark_main(ctx, &result_2721, read_value_2715,
-                            read_value_2718) == 0);
+        assert(futhark_main(ctx, &result_2863, read_value_2857,
+                            read_value_2860) == 0);
         assert(futhark_context_sync(ctx) == 0);
         t_end = get_wall_time();
         
@@ -1080,15 +1080,15 @@ static void futrts_cli_entry_main(struct futhark_context *ctx)
         
         if (time_runs && runtime_file != NULL)
             fprintf(runtime_file, "%ld\n", elapsed_usec);
-        assert(futhark_free_f32_1d(ctx, read_value_2715) == 0);
-        assert(futhark_free_f32_1d(ctx, read_value_2718) == 0);
+        assert(futhark_free_f32_1d(ctx, read_value_2857) == 0);
+        assert(futhark_free_f32_1d(ctx, read_value_2860) == 0);
         if (run < num_runs - 1) {
             ;
         }
     }
-    free(read_arr_2717);
-    free(read_arr_2720);
-    write_scalar(stdout, binary_output, &f64, &result_2721);
+    free(read_arr_2859);
+    free(read_arr_2862);
+    write_scalar(stdout, binary_output, &f64, &result_2863);
     printf("\n");
     ;
 }
@@ -1611,7 +1611,12 @@ const char *opencl_program[] =
             "int16_t and16(uint16_t x, uint16_t y)\n{\n    return x & y;\n}\nstatic inline uint32_t and32(uint32_t x, uint32_t y)\n{\n    return x & y;\n}\nstatic inline uint64_t and64(uint64_t x, uint64_t y)\n{\n    return x & y;\n}\nstatic inline uint8_t or8(uint8_t x, uint8_t y)\n{\n    return x | y;\n}\nstatic inline uint16_t or16(uint16_t x, uint16_t y)\n{\n    return x | y;\n}\nstatic inline uint32_t or32(uint32_t x, uint32_t y)\n{\n    return x | y;\n}\nstatic inline uint64_t or64(uint64_t x, uint64_t y)\n{\n    return x | y;\n}\nstatic inline uint8_t xor8(uint8_t x, uint8_t y)\n{\n    return x ^ y;\n}\nstatic inline uint16_t xor16(uint16_t x, uint16_t y)\n{\n    return x ^ y;\n}\nstatic inline uint32_t xor32(uint32_t x, uint32_t y)\n{\n    return x ^ y;\n}\nstatic inline uint64_t xor64(uint64_t x, uint64_t y)\n{\n    return x ^ y;\n}\nstatic inline char ult8(uint8_t x, uint8_t y)\n{\n    return x < y;\n}\nstatic inline char ult16(uint16_t x, uint16_t y)\n{\n    return x < y;\n}\nstatic inline char ult32(uint32_t x, uint32_t y)\n{\n    return x < y;\n}\nstatic inline char ult64(uint64_t x, uint64_t y)\n{\n    return x < y;\n}\nstatic inline char ule8(uint8_t x, uint8_t y)\n{\n    return x <= y;\n}\nstatic inline char ule16(uint16_t x, uint16_t y)\n{\n    return x <= y;\n}\nstatic inline char ule32(uint32_t x, uint32_t y)\n{\n    return x <= y;\n}\nstatic inline char ule64(uint64_t x, uint64_t y)\n{\n    return x <= y;\n}\nstatic inline char slt8(int8_t x, int8_t y)\n{\n    return x < y;\n}\nstatic inline char slt16(int16_t x, int16_t y)\n{\n    return x < y;\n}\nstatic inline char slt32(int32_t x, int32_t y)\n{\n    return x < y;\n}\nstatic inline char slt64(int64_t x, int64_t y)\n{\n    return x < y;\n}\nstatic inline char sle8(int8_t x, int8_t y)\n{\n    return x <= y;\n}\nstatic inline char sle16(int16_t x, int16_t y)\n{\n    return x <= y;\n}\nstatic inline char sle32(int32_t x, int32_t y)\n{\n    return x <= y;\n}\nstatic inline char sle64(int64_t x, int64_t y)\n{\n    return x <= y;\n}\nstatic inline int8_t pow8(int8_t x, int8_t y)\n{\n    int8_t res = 1, rem = y;\n    \n    ",
             "while (rem != 0) {\n        if (rem & 1)\n            res *= x;\n        rem >>= 1;\n        x *= x;\n    }\n    return res;\n}\nstatic inline int16_t pow16(int16_t x, int16_t y)\n{\n    int16_t res = 1, rem = y;\n    \n    while (rem != 0) {\n        if (rem & 1)\n            res *= x;\n        rem >>= 1;\n        x *= x;\n    }\n    return res;\n}\nstatic inline int32_t pow32(int32_t x, int32_t y)\n{\n    int32_t res = 1, rem = y;\n    \n    while (rem != 0) {\n        if (rem & 1)\n            res *= x;\n        rem >>= 1;\n        x *= x;\n    }\n    return res;\n}\nstatic inline int64_t pow64(int64_t x, int64_t y)\n{\n    int64_t res = 1, rem = y;\n    \n    while (rem != 0) {\n        if (rem & 1)\n            res *= x;\n        rem >>= 1;\n        x *= x;\n    }\n    return res;\n}\nstatic inline int8_t sext_i8_i8(int8_t x)\n{\n    return x;\n}\nstatic inline int16_t sext_i8_i16(int8_t x)\n{\n    return x;\n}\nstatic inline int32_t sext_i8_i32(int8_t x)\n{\n    return x;\n}\nstatic inline int64_t sext_i8_i64(int8_t x)\n{\n    return x;\n}\nstatic inline int8_t sext_i16_i8(int16_t x)\n{\n    return x;\n}\nstatic inline int16_t sext_i16_i16(int16_t x)\n{\n    return x;\n}\nstatic inline int32_t sext_i16_i32(int16_t x)\n{\n    return x;\n}\nstatic inline int64_t sext_i16_i64(int16_t x)\n{\n    return x;\n}\nstatic inline int8_t sext_i32_i8(int32_t x)\n{\n    return x;\n}\nstatic inline int16_t sext_i32_i16(int32_t x)\n{\n    return x;\n}\nstatic inline int32_t sext_i32_i32(int32_t x)\n{\n    return x;\n}\nstatic inline int64_t sext_i32_i64(int32_t x)\n{\n    return x;\n}\nstatic inline int8_t sext_i64_i8(int64_t x)\n{\n    return x;\n}\nstatic inline int16_t sext_i64_i16(int64_t x)\n{\n    return x;\n}\nstatic inline int32_t sext_i64_i32(int64_t x)\n{\n    return x;\n}\nstatic inline int64_t sext_i64_i64(int64_t x)\n{\n    return x;\n}\nstatic inline uint8_t zext_i8_i8(uint8_t x)\n{\n    return x;\n}\nstatic inline uint16_t zext_i8_i16(uint8_t x)\n{\n    return x;\n}\nstatic inline uint32_t zext_i8_i32(uint8_t x)\n{\n    return x;\n}\nstatic inline uint64_t zext_i8_i64(uint8_t x)",
             "\n{\n    return x;\n}\nstatic inline uint8_t zext_i16_i8(uint16_t x)\n{\n    return x;\n}\nstatic inline uint16_t zext_i16_i16(uint16_t x)\n{\n    return x;\n}\nstatic inline uint32_t zext_i16_i32(uint16_t x)\n{\n    return x;\n}\nstatic inline uint64_t zext_i16_i64(uint16_t x)\n{\n    return x;\n}\nstatic inline uint8_t zext_i32_i8(uint32_t x)\n{\n    return x;\n}\nstatic inline uint16_t zext_i32_i16(uint32_t x)\n{\n    return x;\n}\nstatic inline uint32_t zext_i32_i32(uint32_t x)\n{\n    return x;\n}\nstatic inline uint64_t zext_i32_i64(uint32_t x)\n{\n    return x;\n}\nstatic inline uint8_t zext_i64_i8(uint64_t x)\n{\n    return x;\n}\nstatic inline uint16_t zext_i64_i16(uint64_t x)\n{\n    return x;\n}\nstatic inline uint32_t zext_i64_i32(uint64_t x)\n{\n    return x;\n}\nstatic inline uint64_t zext_i64_i64(uint64_t x)\n{\n    return x;\n}\nstatic inline float fdiv32(float x, float y)\n{\n    return x / y;\n}\nstatic inline float fadd32(float x, float y)\n{\n    return x + y;\n}\nstatic inline float fsub32(float x, float y)\n{\n    return x - y;\n}\nstatic inline float fmul32(float x, float y)\n{\n    return x * y;\n}\nstatic inline float fmin32(float x, float y)\n{\n    return x < y ? x : y;\n}\nstatic inline float fmax32(float x, float y)\n{\n    return x < y ? y : x;\n}\nstatic inline float fpow32(float x, float y)\n{\n    return pow(x, y);\n}\nstatic inline char cmplt32(float x, float y)\n{\n    return x < y;\n}\nstatic inline char cmple32(float x, float y)\n{\n    return x <= y;\n}\nstatic inline float sitofp_i8_f32(int8_t x)\n{\n    return x;\n}\nstatic inline float sitofp_i16_f32(int16_t x)\n{\n    return x;\n}\nstatic inline float sitofp_i32_f32(int32_t x)\n{\n    return x;\n}\nstatic inline float sitofp_i64_f32(int64_t x)\n{\n    return x;\n}\nstatic inline float uitofp_i8_f32(uint8_t x)\n{\n    return x;\n}\nstatic inline float uitofp_i16_f32(uint16_t x)\n{\n    return x;\n}\nstatic inline float uitofp_i32_f32(uint32_t x)\n{\n    return x;\n}\nstatic inline float uitofp_i64_f32(uint64_t x)\n{\n    return x;\n}\nstatic inline int8_t fptosi_f32_i8(float x)\n{\n    return x;",
-            "\n}\nstatic inline int16_t fptosi_f32_i16(float x)\n{\n    return x;\n}\nstatic inline int32_t fptosi_f32_i32(float x)\n{\n    return x;\n}\nstatic inline int64_t fptosi_f32_i64(float x)\n{\n    return x;\n}\nstatic inline uint8_t fptoui_f32_i8(float x)\n{\n    return x;\n}\nstatic inline uint16_t fptoui_f32_i16(float x)\n{\n    return x;\n}\nstatic inline uint32_t fptoui_f32_i32(float x)\n{\n    return x;\n}\nstatic inline uint64_t fptoui_f32_i64(float x)\n{\n    return x;\n}\nstatic inline float futrts_log32(float x)\n{\n    return log(x);\n}\nstatic inline float futrts_sqrt32(float x)\n{\n    return sqrt(x);\n}\nstatic inline float futrts_exp32(float x)\n{\n    return exp(x);\n}\nstatic inline float futrts_cos32(float x)\n{\n    return cos(x);\n}\nstatic inline float futrts_sin32(float x)\n{\n    return sin(x);\n}\nstatic inline float futrts_acos32(float x)\n{\n    return acos(x);\n}\nstatic inline float futrts_asin32(float x)\n{\n    return asin(x);\n}\nstatic inline float futrts_atan32(float x)\n{\n    return atan(x);\n}\nstatic inline float futrts_atan2_32(float x, float y)\n{\n    return atan2(x, y);\n}\nstatic inline char futrts_isnan32(float x)\n{\n    return isnan(x);\n}\nstatic inline char futrts_isinf32(float x)\n{\n    return isinf(x);\n}\nstatic inline int32_t futrts_to_bits32(float x)\n{\n    union {\n        float f;\n        int32_t t;\n    } p;\n    \n    p.f = x;\n    return p.t;\n}\nstatic inline float futrts_from_bits32(int32_t x)\n{\n    union {\n        int32_t f;\n        float t;\n    } p;\n    \n    p.f = x;\n    return p.t;\n}\n\n",
+            "\n}\nstatic inline int16_t fptosi_f32_i16(float x)\n{\n    return x;\n}\nstatic inline int32_t fptosi_f32_i32(float x)\n{\n    return x;\n}\nstatic inline int64_t fptosi_f32_i64(float x)\n{\n    return x;\n}\nstatic inline uint8_t fptoui_f32_i8(float x)\n{\n    return x;\n}\nstatic inline uint16_t fptoui_f32_i16(float x)\n{\n    return x;\n}\nstatic inline uint32_t fptoui_f32_i32(float x)\n{\n    return x;\n}\nstatic inline uint64_t fptoui_f32_i64(float x)\n{\n    return x;\n}\nstatic inline float futrts_log32(float x)\n{\n    return log(x);\n}\nstatic inline float futrts_sqrt32(float x)\n{\n    return sqrt(x);\n}\nstatic inline float futrts_exp32(float x)\n{\n    return exp(x);\n}\nstatic inline float futrts_cos32(float x)\n{\n    return cos(x);\n}\nstatic inline float futrts_sin32(float x)\n{\n    return sin(x);\n}\nstatic inline float futrts_acos32(float x)\n{\n    return acos(x);\n}\nstatic inline float futrts_asin32(float x)\n{\n    return asin(x);\n}\nstatic inline float futrts_atan32(float x)\n{\n    return atan(x);\n}\nstatic inline float futrts_atan2_32(float x, float y)\n{\n    return atan2(x, y);\n}\nstatic inline char futrts_isnan32(float x)\n{\n    return isnan(x);\n}\nstatic inline char futrts_isinf32(float x)\n{\n    return isinf(x);\n}\nstatic inline int32_t futrts_to_bits32(float x)\n{\n    union {\n        float f;\n        int32_t t;\n    } p;\n    \n    p.f = x;\n    return p.t;\n}\nstatic inline float futrts_from_bits32(int32_t x)\n{\n    union {\n        int32_t f;\n        float t;\n    } p;\n    \n    p.f = x;\n    return p.t;\n}\n#define group_sizze_2751 (DEFAULT_GROUP_SIZE)\n#define group_sizze_2751 (DEFAULT_GROUP_SIZE)\n__kernel void chunked_reduce_kernel_2766(__local volatile\n                                         int64_t *mem_aligned_0,\n                                         int32_t sizze_2704,\n                                         int32_t num_threads_2758,\n                                         int32_t per_thread_elements_2761,\n                                         __global unsigned char *xs_mem_2817,\n                 ",
+            "                        __global unsigned char *ys_mem_2819,\n                                         __global unsigned char *mem_2825)\n{\n    __local volatile char *restrict mem_2822 = mem_aligned_0;\n    int32_t wave_sizze_2835;\n    int32_t group_sizze_2836;\n    char thread_active_2837;\n    int32_t global_tid_2766;\n    int32_t local_tid_2767;\n    int32_t group_id_2768;\n    \n    global_tid_2766 = get_global_id(0);\n    local_tid_2767 = get_local_id(0);\n    group_sizze_2836 = get_local_size(0);\n    wave_sizze_2835 = LOCKSTEP_WIDTH;\n    group_id_2768 = get_group_id(0);\n    thread_active_2837 = 1;\n    \n    int32_t chunk_sizze_2772;\n    int32_t res_2775;\n    int32_t final_result_2794;\n    \n    chunk_sizze_2772 = smin32(per_thread_elements_2761, squot32(sizze_2704 -\n                                                                global_tid_2766 +\n                                                                num_threads_2758 -\n                                                                1,\n                                                                num_threads_2758));\n    \n    int32_t acc_2778 = 0;\n    int32_t groupstream_mapaccum_dummy_chunk_sizze_2776 = 1;\n    \n    if (thread_active_2837) {\n        for (int32_t i_2777 = 0; i_2777 < chunk_sizze_2772; i_2777++) {\n            int32_t binop_y_2810 = i_2777 * num_threads_2758;\n            int32_t convop_x_2811 = global_tid_2766 + binop_y_2810;\n            float arg_2782 = *(__global float *) &xs_mem_2817[convop_x_2811 *\n                                                              4];\n            float arg_2783 = *(__global float *) &ys_mem_2819[convop_x_2811 *\n                                                              4];\n            float x_2784 = arg_2782 - 1.0F;\n            float x_2785 = fpow32(x_2784, 2.0F);\n            float x_2786 = arg_2783 - 1.0F;\n            float y_2787 = fpow32(x_2786, 2.0F);\n            float x_2788 = x_2785 + y_2787;\n            char res_2789 = x_2788 <= 1.0F;\n            int32_t res",
+            "_2790;\n            \n            if (res_2789) {\n                res_2790 = 1;\n            } else {\n                res_2790 = 0;\n            }\n            \n            int32_t res_2791 = acc_2778 + res_2790;\n            \n            acc_2778 = res_2791;\n        }\n    }\n    res_2775 = acc_2778;\n    barrier(CLK_LOCAL_MEM_FENCE);\n    if (slt32(local_tid_2767, group_sizze_2751) && 1) {\n        *(__local int32_t *) &mem_2822[local_tid_2767 * 4] = res_2775;\n    }\n    barrier(CLK_LOCAL_MEM_FENCE);\n    \n    int32_t skip_waves_2838;\n    int32_t my_index_2795;\n    int32_t other_offset_2796;\n    int32_t s_2797;\n    int32_t l_2798;\n    \n    my_index_2795 = local_tid_2767;\n    other_offset_2796 = 0;\n    s_2797 = *(__local int32_t *) &mem_2822[(local_tid_2767 +\n                                             other_offset_2796) * 4];\n    other_offset_2796 = 1;\n    while (slt32(other_offset_2796, wave_sizze_2835)) {\n        if (slt32(local_tid_2767 + other_offset_2796, group_sizze_2751) &&\n            ((local_tid_2767 - squot32(local_tid_2767, wave_sizze_2835) *\n              wave_sizze_2835) & (2 * other_offset_2796 - 1)) == 0) {\n            // read array element\n            {\n                l_2798 = *(volatile __local\n                           int32_t *) &mem_2822[(local_tid_2767 +\n                                                 other_offset_2796) * 4];\n            }\n            \n            int32_t res_2799;\n            \n            if (thread_active_2837) {\n                res_2799 = s_2797 + l_2798;\n            }\n            s_2797 = res_2799;\n            *(volatile __local int32_t *) &mem_2822[local_tid_2767 * 4] =\n                s_2797;\n        }\n        other_offset_2796 *= 2;\n    }\n    skip_waves_2838 = 1;\n    while (slt32(skip_waves_2838, squot32(group_sizze_2836 + wave_sizze_2835 -\n                                          1, wave_sizze_2835))) {\n        barrier(CLK_LOCAL_MEM_FENCE);\n        other_offset_2796 = skip_waves_2838 * wave_sizze_2835;\n        if ((local_tid_2",
+            "767 - squot32(local_tid_2767, wave_sizze_2835) *\n             wave_sizze_2835) == 0 && (squot32(local_tid_2767,\n                                               wave_sizze_2835) & (2 *\n                                                                   skip_waves_2838 -\n                                                                   1)) == 0) {\n            // read array element\n            {\n                l_2798 = *(__local int32_t *) &mem_2822[(local_tid_2767 +\n                                                         other_offset_2796) *\n                                                        4];\n            }\n            \n            int32_t res_2799;\n            \n            if (thread_active_2837) {\n                res_2799 = s_2797 + l_2798;\n            }\n            s_2797 = res_2799;\n            *(__local int32_t *) &mem_2822[local_tid_2767 * 4] = s_2797;\n        }\n        skip_waves_2838 *= 2;\n    }\n    final_result_2794 = s_2797;\n    if (local_tid_2767 == 0) {\n        *(__global int32_t *) &mem_2825[group_id_2768 * 4] = final_result_2794;\n    }\n}\n__kernel void reduce_kernel_2802(__local volatile int64_t *mem_aligned_0,\n                                 int32_t num_groups_2757, __global\n                                 unsigned char *mem_2825, __global\n                                 unsigned char *mem_2831)\n{\n    __local volatile char *restrict mem_2828 = mem_aligned_0;\n    int32_t wave_sizze_2839;\n    int32_t group_sizze_2840;\n    char thread_active_2841;\n    int32_t global_tid_2802;\n    int32_t local_tid_2803;\n    int32_t group_id_2804;\n    \n    global_tid_2802 = get_global_id(0);\n    local_tid_2803 = get_local_id(0);\n    group_sizze_2840 = get_local_size(0);\n    wave_sizze_2839 = LOCKSTEP_WIDTH;\n    group_id_2804 = get_group_id(0);\n    thread_active_2841 = 1;\n    \n    char in_bounds_2805;\n    \n    if (thread_active_2841) {\n        in_bounds_2805 = slt32(local_tid_2803, num_groups_2757);\n    }\n    \n    int32_t final_result_2809;\n    \n    barrier(CLK_LOC",
+            "AL_MEM_FENCE);\n    if (slt32(local_tid_2803, group_sizze_2751) && 1) {\n        int32_t elem_2807;\n        \n        if (in_bounds_2805) {\n            int32_t x_2806 = *(__global int32_t *) &mem_2825[global_tid_2802 *\n                                                             4];\n            \n            elem_2807 = x_2806;\n        } else {\n            elem_2807 = 0;\n        }\n        *(__local int32_t *) &mem_2828[local_tid_2803 * 4] = elem_2807;\n    }\n    barrier(CLK_LOCAL_MEM_FENCE);\n    \n    int32_t skip_waves_2842;\n    int32_t s_2723;\n    int32_t l_2724;\n    int32_t my_index_2764;\n    int32_t other_offset_2765;\n    \n    my_index_2764 = local_tid_2803;\n    other_offset_2765 = 0;\n    s_2723 = *(__local int32_t *) &mem_2828[(local_tid_2803 +\n                                             other_offset_2765) * 4];\n    other_offset_2765 = 1;\n    while (slt32(other_offset_2765, wave_sizze_2839)) {\n        if (slt32(local_tid_2803 + other_offset_2765, group_sizze_2751) &&\n            ((local_tid_2803 - squot32(local_tid_2803, wave_sizze_2839) *\n              wave_sizze_2839) & (2 * other_offset_2765 - 1)) == 0) {\n            // read array element\n            {\n                l_2724 = *(volatile __local\n                           int32_t *) &mem_2828[(local_tid_2803 +\n                                                 other_offset_2765) * 4];\n            }\n            \n            int32_t res_2725;\n            \n            if (thread_active_2841) {\n                res_2725 = s_2723 + l_2724;\n            }\n            s_2723 = res_2725;\n            *(volatile __local int32_t *) &mem_2828[local_tid_2803 * 4] =\n                s_2723;\n        }\n        other_offset_2765 *= 2;\n    }\n    skip_waves_2842 = 1;\n    while (slt32(skip_waves_2842, squot32(group_sizze_2840 + wave_sizze_2839 -\n                                          1, wave_sizze_2839))) {\n        barrier(CLK_LOCAL_MEM_FENCE);\n        other_offset_2765 = skip_waves_2842 * wave_sizze_2839;\n        if ((local_tid_2803 ",
+            "- squot32(local_tid_2803, wave_sizze_2839) *\n             wave_sizze_2839) == 0 && (squot32(local_tid_2803,\n                                               wave_sizze_2839) & (2 *\n                                                                   skip_waves_2842 -\n                                                                   1)) == 0) {\n            // read array element\n            {\n                l_2724 = *(__local int32_t *) &mem_2828[(local_tid_2803 +\n                                                         other_offset_2765) *\n                                                        4];\n            }\n            \n            int32_t res_2725;\n            \n            if (thread_active_2841) {\n                res_2725 = s_2723 + l_2724;\n            }\n            s_2723 = res_2725;\n            *(__local int32_t *) &mem_2828[local_tid_2803 * 4] = s_2723;\n        }\n        skip_waves_2842 *= 2;\n    }\n    final_result_2809 = s_2723;\n    if (local_tid_2803 == 0) {\n        *(__global int32_t *) &mem_2831[group_id_2804 * 4] = final_result_2809;\n    }\n}\n",
             NULL};
 struct memblock_device {
     int *references;
@@ -1692,12 +1697,35 @@ struct futhark_context {
     int64_t cur_mem_usage_default;
     int total_runs;
     int total_runtime;
+    cl_kernel chunked_reduce_kernel_2766;
+    int chunked_reduce_kernel_2766_total_runtime;
+    int chunked_reduce_kernel_2766_runs;
+    cl_kernel reduce_kernel_2802;
+    int reduce_kernel_2802_total_runtime;
+    int reduce_kernel_2802_runs;
     struct opencl_context opencl;
 } ;
 void setup_opencl_and_load_kernels(struct futhark_context *ctx)
 {
     cl_int error;
     cl_program prog = setup_opencl(&ctx->opencl, opencl_program);
+    
+    {
+        ctx->chunked_reduce_kernel_2766 = clCreateKernel(prog,
+                                                         "chunked_reduce_kernel_2766",
+                                                         &error);
+        assert(error == 0);
+        if (ctx->debugging)
+            fprintf(stderr, "Created kernel %s.\n",
+                    "chunked_reduce_kernel_2766");
+    }
+    {
+        ctx->reduce_kernel_2802 = clCreateKernel(prog, "reduce_kernel_2802",
+                                                 &error);
+        assert(error == 0);
+        if (ctx->debugging)
+            fprintf(stderr, "Created kernel %s.\n", "reduce_kernel_2802");
+    }
 }
 void post_opencl_setup(struct opencl_context *ctx,
                        struct opencl_device_option *option)
@@ -1748,6 +1776,10 @@ struct futhark_context *futhark_context_new(struct futhark_context_config *cfg)
     ctx->cur_mem_usage_default = 0;
     ctx->total_runs = 0;
     ctx->total_runtime = 0;
+    ctx->chunked_reduce_kernel_2766_total_runtime = 0;
+    ctx->chunked_reduce_kernel_2766_runs = 0;
+    ctx->reduce_kernel_2802_total_runtime = 0;
+    ctx->reduce_kernel_2802_runs = 0;
     setup_opencl_and_load_kernels(ctx);
     return ctx;
 }
@@ -1785,12 +1817,12 @@ static void memblock_alloc_device(struct futhark_context *ctx,
 {
     memblock_unref_device(ctx, block);
     
-    cl_int clCreateBuffer_succeeded_2710;
+    cl_int clCreateBuffer_succeeded_2843;
     
     block->mem = clCreateBuffer(ctx->opencl.ctx, CL_MEM_READ_WRITE, size >
                                 0 ? size : 1, NULL,
-                                &clCreateBuffer_succeeded_2710);
-    OPENCL_SUCCEED(clCreateBuffer_succeeded_2710);
+                                &clCreateBuffer_succeeded_2843);
+    OPENCL_SUCCEED(clCreateBuffer_succeeded_2843);
     block->references = (int *) malloc(sizeof(int));
     *block->references = 1;
     block->size = size;
@@ -1917,6 +1949,24 @@ void futhark_debugging_report(struct futhark_context *ctx)
                 ctx->peak_mem_usage_default);
     }
     if (ctx->debugging) {
+        fprintf(stderr,
+                "Kernel chunked_reduce_kernel_2766 executed %6d times, with average runtime: %6ldus\tand total runtime: %6ldus\n",
+                ctx->chunked_reduce_kernel_2766_runs,
+                (long) ctx->chunked_reduce_kernel_2766_total_runtime /
+                (ctx->chunked_reduce_kernel_2766_runs !=
+                 0 ? ctx->chunked_reduce_kernel_2766_runs : 1),
+                (long) ctx->chunked_reduce_kernel_2766_total_runtime);
+        ctx->total_runtime += ctx->chunked_reduce_kernel_2766_total_runtime;
+        ctx->total_runs += ctx->chunked_reduce_kernel_2766_runs;
+        fprintf(stderr,
+                "Kernel reduce_kernel_2802         executed %6d times, with average runtime: %6ldus\tand total runtime: %6ldus\n",
+                ctx->reduce_kernel_2802_runs,
+                (long) ctx->reduce_kernel_2802_total_runtime /
+                (ctx->reduce_kernel_2802_runs !=
+                 0 ? ctx->reduce_kernel_2802_runs : 1),
+                (long) ctx->reduce_kernel_2802_total_runtime);
+        ctx->total_runtime += ctx->reduce_kernel_2802_total_runtime;
+        ctx->total_runs += ctx->reduce_kernel_2802_runs;
         if (ctx->debugging)
             fprintf(stderr, "Ran %d kernels with cumulative runtime: %6ldus\n",
                     ctx->total_runs, ctx->total_runtime);
@@ -1926,11 +1976,11 @@ struct futrts_double {
     double v0;
 } ;
 static struct futrts_double futrts_main(struct futhark_context *ctx,
-                                        int64_t xs_mem_sizze_2704,
-                                        struct memblock_device xs_mem_2705,
-                                        int64_t ys_mem_sizze_2706,
-                                        struct memblock_device ys_mem_2707,
-                                        int32_t sizze_2630, int32_t sizze_2631);
+                                        int64_t xs_mem_sizze_2816,
+                                        struct memblock_device xs_mem_2817,
+                                        int64_t ys_mem_sizze_2818,
+                                        struct memblock_device ys_mem_2819,
+                                        int32_t sizze_2704, int32_t sizze_2705);
 static inline int8_t add8(int8_t x, int8_t y)
 {
     return x + y;
@@ -2840,74 +2890,169 @@ static inline double futrts_from_bits64(int64_t x)
     return p.t;
 }
 static struct futrts_double futrts_main(struct futhark_context *ctx,
-                                        int64_t xs_mem_sizze_2704,
-                                        struct memblock_device xs_mem_2705,
-                                        int64_t ys_mem_sizze_2706,
-                                        struct memblock_device ys_mem_2707,
-                                        int32_t sizze_2630, int32_t sizze_2631)
+                                        int64_t xs_mem_sizze_2816,
+                                        struct memblock_device xs_mem_2817,
+                                        int64_t ys_mem_sizze_2818,
+                                        struct memblock_device ys_mem_2819,
+                                        int32_t sizze_2704, int32_t sizze_2705)
 {
-    double scalar_out_2708;
-    int32_t res_2653;
-    int32_t length_2654 = 0;
+    double scalar_out_2834;
+    char assert_arg_2708 = sizze_2704 == sizze_2705;
+    char shape_cert_2709;
     
-    for (int32_t i_2656 = 0; i_2656 < sizze_2630; i_2656++) {
-        float read_res_2712;
-        
-        OPENCL_SUCCEED(clEnqueueReadBuffer(ctx->opencl.queue, xs_mem_2705.mem,
-                                           CL_TRUE, i_2656 * 4, sizeof(float),
-                                           &read_res_2712, 0, NULL, NULL));
-        
-        float arg_2661 = read_res_2712;
-        char y_2663 = slt32(i_2656, sizze_2631);
-        char bounds_check_2665;
-        
-        if (!y_2663) {
-            fprintf(stderr, "Assertion failed at %s: %s\n",
-                    "assignment3.1.fut:14:5-14:5 -> assignment3.1.fut:14:39-14:39 -> assignment3.1.fut:10:35-10:35",
-                    "index out of bounds");
-            exit(1);
-        }
-        
-        float read_res_2713;
-        
-        OPENCL_SUCCEED(clEnqueueReadBuffer(ctx->opencl.queue, ys_mem_2707.mem,
-                                           CL_TRUE, i_2656 * 4, sizeof(float),
-                                           &read_res_2713, 0, NULL, NULL));
-        
-        float arg_2666 = read_res_2713;
-        float x_2672 = arg_2661 - 1.0F;
-        float x_2676 = fpow32(x_2672, 2.0F);
-        float x_2680 = arg_2666 - 1.0F;
-        float y_2684 = fpow32(x_2680, 2.0F);
-        float x_2685 = x_2676 + y_2684;
-        char res_2689 = x_2685 <= 1.0F;
-        int32_t res_2691;
-        
-        if (res_2689) {
-            int32_t res_2692 = length_2654 + 1;
-            
-            res_2691 = res_2692;
-        } else {
-            res_2691 = length_2654;
-        }
-        
-        int32_t length_tmp_2709 = res_2691;
-        
-        length_2654 = length_tmp_2709;
+    if (!assert_arg_2708) {
+        fprintf(stderr, "Assertion failed at %s: %s\n",
+                "assignment3.1.fut:13:5-13:5 -> assignment3.1.fut:13:39-13:39",
+                "function arguments of wrong shape");
+        exit(1);
     }
-    res_2653 = length_2654;
     
-    double res_2694 = sitofp_i32_f64(res_2653);
-    double res_2697 = sitofp_i32_f64(sizze_2630);
-    double x_2699 = res_2694 / res_2697;
-    double res_2700 = x_2699 * 4.0;
+    int32_t group_sizze_2751;
     
-    scalar_out_2708 = res_2700;
+    group_sizze_2751 = ctx->opencl.cfg.group_size;
     
-    struct futrts_double retval_2711;
+    int32_t max_num_groups_2752;
     
-    retval_2711.v0 = scalar_out_2708;
-    return retval_2711;
+    max_num_groups_2752 = ctx->opencl.cfg.num_groups;
+    
+    int32_t y_2753 = group_sizze_2751 - 1;
+    int32_t x_2754 = sizze_2704 + y_2753;
+    int32_t w_div_group_sizze_2755 = squot32(x_2754, group_sizze_2751);
+    int32_t num_groups_maybe_zzero_2756 = smin32(w_div_group_sizze_2755,
+                                                 max_num_groups_2752);
+    int32_t num_groups_2757 = smax32(1, num_groups_maybe_zzero_2756);
+    int32_t num_threads_2758 = num_groups_2757 * group_sizze_2751;
+    int32_t y_2759 = num_threads_2758 - 1;
+    int32_t x_2760 = sizze_2704 + y_2759;
+    int32_t per_thread_elements_2761 = squot32(x_2760, num_threads_2758);
+    int64_t binop_x_2824 = sext_i32_i64(num_groups_2757);
+    int64_t bytes_2823 = binop_x_2824 * 4;
+    struct memblock_device mem_2825;
+    
+    mem_2825.references = NULL;
+    memblock_alloc_device(ctx, &mem_2825, bytes_2823);
+    
+    int64_t binop_y_2821 = sext_i32_i64(group_sizze_2751);
+    int64_t bytes_2820 = 4 * binop_y_2821;
+    struct memblock_local mem_2822;
+    
+    mem_2822.references = NULL;
+    if (ctx->debugging)
+        fprintf(stderr, "%s: %d\n", "input size", (int) sizze_2704);
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 0,
+                                  bytes_2820, NULL));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 1,
+                                  sizeof(sizze_2704), &sizze_2704));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 2,
+                                  sizeof(num_threads_2758), &num_threads_2758));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 3,
+                                  sizeof(per_thread_elements_2761),
+                                  &per_thread_elements_2761));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 4,
+                                  sizeof(xs_mem_2817.mem), &xs_mem_2817.mem));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 5,
+                                  sizeof(ys_mem_2819.mem), &ys_mem_2819.mem));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->chunked_reduce_kernel_2766, 6,
+                                  sizeof(mem_2825.mem), &mem_2825.mem));
+    if (1 * (num_groups_2757 * group_sizze_2751) != 0) {
+        const size_t global_work_sizze_2845[1] = {num_groups_2757 *
+                     group_sizze_2751};
+        const size_t local_work_sizze_2849[1] = {group_sizze_2751};
+        int64_t time_start_2846, time_end_2847;
+        
+        if (ctx->debugging) {
+            fprintf(stderr, "Launching %s with global work size [",
+                    "chunked_reduce_kernel_2766");
+            fprintf(stderr, "%zu", global_work_sizze_2845[0]);
+            fprintf(stderr, "].\n");
+            time_start_2846 = get_wall_time();
+        }
+        OPENCL_SUCCEED(clEnqueueNDRangeKernel(ctx->opencl.queue,
+                                              ctx->chunked_reduce_kernel_2766,
+                                              1, NULL, global_work_sizze_2845,
+                                              local_work_sizze_2849, 0, NULL,
+                                              NULL));
+        if (ctx->debugging) {
+            OPENCL_SUCCEED(clFinish(ctx->opencl.queue));
+            time_end_2847 = get_wall_time();
+            
+            long time_diff_2848 = time_end_2847 - time_start_2846;
+            
+            ctx->chunked_reduce_kernel_2766_total_runtime += time_diff_2848;
+            ctx->chunked_reduce_kernel_2766_runs++;
+            fprintf(stderr, "kernel %s runtime: %ldus\n",
+                    "chunked_reduce_kernel_2766", (int) time_diff_2848);
+        }
+    }
+    
+    struct memblock_device mem_2831;
+    
+    mem_2831.references = NULL;
+    memblock_alloc_device(ctx, &mem_2831, 4);
+    
+    struct memblock_local mem_2828;
+    
+    mem_2828.references = NULL;
+    OPENCL_SUCCEED(clSetKernelArg(ctx->reduce_kernel_2802, 0, bytes_2820,
+                                  NULL));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->reduce_kernel_2802, 1,
+                                  sizeof(num_groups_2757), &num_groups_2757));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->reduce_kernel_2802, 2,
+                                  sizeof(mem_2825.mem), &mem_2825.mem));
+    OPENCL_SUCCEED(clSetKernelArg(ctx->reduce_kernel_2802, 3,
+                                  sizeof(mem_2831.mem), &mem_2831.mem));
+    if (1 * group_sizze_2751 != 0) {
+        const size_t global_work_sizze_2850[1] = {group_sizze_2751};
+        const size_t local_work_sizze_2854[1] = {group_sizze_2751};
+        int64_t time_start_2851, time_end_2852;
+        
+        if (ctx->debugging) {
+            fprintf(stderr, "Launching %s with global work size [",
+                    "reduce_kernel_2802");
+            fprintf(stderr, "%zu", global_work_sizze_2850[0]);
+            fprintf(stderr, "].\n");
+            time_start_2851 = get_wall_time();
+        }
+        OPENCL_SUCCEED(clEnqueueNDRangeKernel(ctx->opencl.queue,
+                                              ctx->reduce_kernel_2802, 1, NULL,
+                                              global_work_sizze_2850,
+                                              local_work_sizze_2854, 0, NULL,
+                                              NULL));
+        if (ctx->debugging) {
+            OPENCL_SUCCEED(clFinish(ctx->opencl.queue));
+            time_end_2852 = get_wall_time();
+            
+            long time_diff_2853 = time_end_2852 - time_start_2851;
+            
+            ctx->reduce_kernel_2802_total_runtime += time_diff_2853;
+            ctx->reduce_kernel_2802_runs++;
+            fprintf(stderr, "kernel %s runtime: %ldus\n", "reduce_kernel_2802",
+                    (int) time_diff_2853);
+        }
+    }
+    
+    int32_t read_res_2855;
+    
+    OPENCL_SUCCEED(clEnqueueReadBuffer(ctx->opencl.queue, mem_2831.mem, CL_TRUE,
+                                       0, sizeof(int32_t), &read_res_2855, 0,
+                                       NULL, NULL));
+    
+    int32_t res_2722 = read_res_2855;
+    double res_2739 = sitofp_i32_f64(res_2722);
+    double res_2740 = sitofp_i32_f64(sizze_2704);
+    double x_2741 = res_2739 / res_2740;
+    double res_2742 = x_2741 * 4.0;
+    
+    scalar_out_2834 = res_2742;
+    
+    struct futrts_double retval_2844;
+    
+    retval_2844.v0 = scalar_out_2834;
+    memblock_unref_device(ctx, &mem_2825);
+    memblock_unref_local(ctx, &mem_2822);
+    memblock_unref_device(ctx, &mem_2831);
+    memblock_unref_local(ctx, &mem_2828);
+    return retval_2844;
 }
 struct futhark_f32_1d {
     struct memblock_device mem;
@@ -2953,33 +3098,33 @@ int64_t *futhark_shape_f32_1d(struct futhark_context *ctx,
 int futhark_main(struct futhark_context *ctx, double *out0,
                  struct futhark_f32_1d *in0, struct futhark_f32_1d *in1)
 {
-    int64_t xs_mem_sizze_2704;
-    struct memblock_device xs_mem_2705;
+    int64_t xs_mem_sizze_2816;
+    struct memblock_device xs_mem_2817;
     
-    xs_mem_2705.references = NULL;
+    xs_mem_2817.references = NULL;
     
-    int64_t ys_mem_sizze_2706;
-    struct memblock_device ys_mem_2707;
+    int64_t ys_mem_sizze_2818;
+    struct memblock_device ys_mem_2819;
     
-    ys_mem_2707.references = NULL;
+    ys_mem_2819.references = NULL;
     
-    int32_t sizze_2630;
-    int32_t sizze_2631;
-    double scalar_out_2708;
+    int32_t sizze_2704;
+    int32_t sizze_2705;
+    double scalar_out_2834;
     
-    xs_mem_2705 = in0->mem;
-    xs_mem_sizze_2704 = in0->mem.size;
-    sizze_2630 = in0->shape[0];
-    ys_mem_2707 = in1->mem;
-    ys_mem_sizze_2706 = in1->mem.size;
-    sizze_2631 = in1->shape[0];
+    xs_mem_2817 = in0->mem;
+    xs_mem_sizze_2816 = in0->mem.size;
+    sizze_2704 = in0->shape[0];
+    ys_mem_2819 = in1->mem;
+    ys_mem_sizze_2818 = in1->mem.size;
+    sizze_2705 = in1->shape[0];
     
-    struct futrts_double ret_2714;
+    struct futrts_double ret_2856;
     
-    ret_2714 = futrts_main(ctx, xs_mem_sizze_2704, xs_mem_2705,
-                           ys_mem_sizze_2706, ys_mem_2707, sizze_2630,
-                           sizze_2631);
-    scalar_out_2708 = ret_2714.v0;
-    *out0 = scalar_out_2708;
+    ret_2856 = futrts_main(ctx, xs_mem_sizze_2816, xs_mem_2817,
+                           ys_mem_sizze_2818, ys_mem_2819, sizze_2704,
+                           sizze_2705);
+    scalar_out_2834 = ret_2856.v0;
+    *out0 = scalar_out_2834;
     return 0;
 }

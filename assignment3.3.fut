@@ -1,19 +1,18 @@
 import "/futlib/math"
 
 let f(x:f32) (y:f32) : f32 =
-  2.0 f32*x*x*x*x*x*x*y*y - x*x*x*x*x*x*y
+  2.0f32*x*x*x*x*x*x*y*y - x*x*x*x*x*x*y
   + 3.0f32*x*x*x*y*y*y - x*x*y*y*y +
   x*x*x*y - 3.0f32*x*y*y + x*y -
-  5.0 f32*y + 2.0 f32*x*x*x*x*x*y*y*y*y -
-  2.0 f32*x*x*x*x*x*y*y*y*y*y + 250.0 f32
+  5.0f32*y + 2.0f32*x*x*x*x*x*y*y*y*y -
+  2.0f32*x*x*x*x*x*y*y*y*y*y + 250.0f32
 
-let inside((x, y): dart): bool =
-  ((x - f32.i32(1))**f32.i32(2) + (y - f32.i32(1))**f32.i32(2)) <= f32.i32(1)
+let calc_bin (x:f32) (y:f32) (width:f32) =
+  (f x y) * width * width -- expand in two dimensions
 
-let estimate_pi [n] (xs:[n]f32) (ys:[]f32): f64 =
-  let length = loop length = 0 for i in iota n do
-   let is_inside = inside (xs[i], ys[i])
-   in if is_inside then length + 1 else length
-  in (f64.i32(length) / f64.i32(n)) * 4.0
+let estimate_area [n] (xs:[n]f32) (ys:[n]f32): f32 =
+  let bin_width: f32 = 2f32 / f32.i32(n)
+  let areas = map (\i -> calc_bin xs[i] ys[i] bin_width) (iota n)
+  in reduce (+) 0.0f32 areas
 
-let main (xs:[]f32) (ys:[]f32): f64 = estimate_pi xs ys
+let main [n] (xs:[n]f32) (ys:[]f32): f32 = (estimate_area xs ys) * 4.0f32 / f32.i32(n)
